@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.swing.JOptionPane;
+
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
@@ -12,15 +14,19 @@ import com.dropbox.core.v2.files.UploadErrorException;
 public class UploadFiles {
 
 	
-	public static void uploadToDropbox(DbxClientV2 client) //TODO need to include path of the folder
+	public static boolean uploadToDropbox(DbxClientV2 client, String encfile, String filepath) //TODO need to include path of the folder
 	{
-	// Upload "test.txt" to Dropbox
-    
-    try (InputStream in = new FileInputStream("C:/Users/snigdha/Desktop/practice/SecureFileShare/srij.txt")) {
-        FileMetadata metadata = client.files().uploadBuilder("/srij.txt")
+	
+		boolean uploaded = false;
+    try (InputStream in = new FileInputStream(encfile)) {
+        FileMetadata metadata = client.files().uploadBuilder("/" +filepath)
             .uploadAndFinish(in);
         
-       
+        uploaded = true;
+        JOptionPane.showMessageDialog(null, "File uploaded to dropbox");
+        
+       return uploaded;
+        
     } catch (UploadErrorException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -31,6 +37,7 @@ public class UploadFiles {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+	return uploaded;
 	
 }
 }
